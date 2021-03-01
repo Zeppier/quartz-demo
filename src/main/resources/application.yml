@@ -1,0 +1,29 @@
+spring.data.postgres.host: localhost
+spring.data.postgres.port: 5432
+spring.data.postgres.database: postgres
+spring.data.postgres.schema: scheduler
+spring.data.postgres.username: postgres
+spring.data.postgres.password: pass
+
+spring.datasource:
+  driverClassName: org.postgresql.Driver
+  url: jdbc:postgresql://${spring.data.postgres.host}:${spring.data.postgres.port}/${spring.data.postgres.database}?currentSchema=${spring.data.postgres.schema}
+  username: ${spring.data.postgres.username}
+  password: ${spring.data.postgres.password}
+
+
+spring:
+  datasource:
+    initialization-mode: always
+
+spring.quartz.job-store-type: jdbc
+
+spring.quartz.jdbc.schema: classpath:scheduler.sql #init from custom script, cause native drops tables
+spring.quartz.overwrite-existing-jobs: true #overwrite, cause job id is source id
+spring.quartz.jdbc.initialize-schema: always
+spring.quartz.scheduler-name: pull-source
+spring.quartz.wait-for-jobs-to-complete-on-shutdown: true
+spring.quartz.properties.org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
+
+spring.quartz.properties.org.quartz.jobStore.isClustered: true
+spring.quartz.properties.org.quartz.scheduler.instanceId: AUTO
